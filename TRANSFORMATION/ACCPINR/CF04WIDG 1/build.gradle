@@ -1,0 +1,47 @@
+buildscript {
+    ext.springBootVersion = '3.3.4'
+	ext.dataConnectIOVersion = '4.0.0.153'
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+}
+
+jar {
+    enabled = true
+    archiveClassifier.set('original')
+}
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+}
+
+group = 'com.cloudframe'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compileClasspath
+	destinationDir = file("./javadoc/")
+    failOnError false	
+	options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+dependencies {
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'com.ibm.db2.jcc:db2jcc4:4.24.92'
+	implementation 'com.ibm.db2.jcc:db2jcc_license_cisuz:11.0.0'
+    implementation ("com.cloudframe.cfdataconnect:CFDataConnectIO:${dataConnectIOVersion}") {
+        transitive = false    
+	}
+}
+
+tasks.withType(JavaCompile) {
+    options.warnings = false
+}
