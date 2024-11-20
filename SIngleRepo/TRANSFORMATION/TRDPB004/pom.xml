@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.edwardjones.app</groupId>
+	<artifactId>TRDPB004</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>TRDPB004</name>
+	<description>CloudFrame Spring Boot generated Code</description>
+
+	<properties>
+		<java.version>17</java.version>
+		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
+		<skipJavaDoc>true</skipJavaDoc>
+		<log4j2.version>2.24.1</log4j2.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
+		</dependency>
+		<dependency>
+		  <groupId>com.ibm.db2.jcc</groupId>
+		  <artifactId>db2jcc4</artifactId>
+		  <version>4.24.92</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.ibm.db2.jcc</groupId>
+		  <artifactId>db2jcc_license_cisuz</artifactId>
+		  <version>11.0.0</version>
+		</dependency>
+        <dependency>
+            <groupId>com.cloudframe</groupId>
+            <artifactId>dcio</artifactId>
+            <version>4.0.0.153</version>
+        </dependency>
+      	<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		</dependency>
+       	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency> 	
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration> 
+					<doclint>none</doclint> 
+					<skip>${skipJavaDoc}</skip> 
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
