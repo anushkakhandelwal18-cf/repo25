@@ -4,7 +4,7 @@ package com.edwardjones.app.trdpb004.file.records.serialize;
 *  The class SummaryRecordSerialized is used to define offsets in order to serialize
 *  in a fixed String
 *  @author CloudFrame Inc.
-*  created on 2024-11-20 at 13:17. using version 5.0.0.153
+*  created on 2024-11-22 at 19:20. using version 5.0.0.158
 **/
 
 import org.slf4j.Logger;

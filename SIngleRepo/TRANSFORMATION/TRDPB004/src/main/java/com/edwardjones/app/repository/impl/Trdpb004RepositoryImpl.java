@@ -69,7 +69,7 @@ return excptionCursorResultSet;
 ******     INTO :EXC-TYPE                                          
 ******         ,:EXC-DESCRIPTION                                   
 **/
-    public void fetchExcptionCursorTrdpb004(ResultSet excptionCursorResultSet, Sqlca sqlca, Dcltbtrdexc dcltbtrdexc) throws Exception {
+    public void fetchExcptionCursorTrdpb004(ResultSet excptionCursorResultSet, Dcltbtrdexc dcltbtrdexc, Sqlca sqlca) throws Exception {
 try {
 	boolean hasResults = excptionCursorResultSet.next();
 	if (hasResults) {
@@ -115,7 +115,7 @@ catch (SQLException e) {
 ******         INTO :EXC-TYPE                                      
 ******             ,:EXC-DESCRIPTION                               
 **/
-    public void fetchExcptionCursor1Trdpb004(ResultSet excptionCursorResultSet, Sqlca sqlca, Dcltbtrdexc dcltbtrdexc) throws Exception {
+    public void fetchExcptionCursor1Trdpb004(ResultSet excptionCursorResultSet, Dcltbtrdexc dcltbtrdexc, Sqlca sqlca) throws Exception {
 try {
 	boolean hasResults = excptionCursorResultSet.next();
 	if (hasResults) {
@@ -204,7 +204,7 @@ return runlogCursorResultSet;
 ******         ,:LOG-START-TS                                      
 ******         ,:LOG-END-TS                                        
 **/
-    public void fetchRunlogCursorTrdpb004(ResultSet runlogCursorResultSet, Sqlca sqlca, Dcltbtrdlog dcltbtrdlog) throws Exception {
+    public void fetchRunlogCursorTrdpb004(ResultSet runlogCursorResultSet, Dcltbtrdlog dcltbtrdlog, Sqlca sqlca) throws Exception {
 try {
 	boolean hasResults = runlogCursorResultSet.next();
 	if (hasResults) {
@@ -258,7 +258,7 @@ catch (SQLException e) {
 ******             ,:LOG-START-TS                                  
 ******             ,:LOG-END-TS                                    
 **/
-    public void fetchRunlogCursor1Trdpb004(ResultSet runlogCursorResultSet, Sqlca sqlca, Dcltbtrdlog dcltbtrdlog) throws Exception {
+    public void fetchRunlogCursor1Trdpb004(ResultSet runlogCursorResultSet, Dcltbtrdlog dcltbtrdlog, Sqlca sqlca) throws Exception {
 try {
 	boolean hasResults = runlogCursorResultSet.next();
 	if (hasResults) {
@@ -363,7 +363,7 @@ return summaryCursorResultSet;
 ******         ,:SUM-TOTAL-CREDIT                                  
 ******         ,:SUM-CLOSE-BALANCE                                 
 **/
-    public void fetchSummaryCursorTrdpb004(ResultSet summaryCursorResultSet, Sqlca sqlca, Dcltbtrdsum dcltbtrdsum) throws Exception {
+    public void fetchSummaryCursorTrdpb004(ResultSet summaryCursorResultSet, Dcltbtrdsum dcltbtrdsum, Sqlca sqlca) throws Exception {
 try {
 	boolean hasResults = summaryCursorResultSet.next();
 	if (hasResults) {
@@ -504,7 +504,7 @@ catch (SQLException e) {
 ******             ,:SUM-TOTAL-DEBIT                               
 ******             ,:SUM-TOTAL-CREDIT                              
 **/
-    public void fetchSummaryCursor1Trdpb004(ResultSet summaryCursorResultSet, Sqlca sqlca, Dcltbtrdsum dcltbtrdsum) throws Exception {
+    public void fetchSummaryCursor1Trdpb004(ResultSet summaryCursorResultSet, Dcltbtrdsum dcltbtrdsum, Sqlca sqlca) throws Exception {
 try {
 	boolean hasResults = summaryCursorResultSet.next();
 	if (hasResults) {

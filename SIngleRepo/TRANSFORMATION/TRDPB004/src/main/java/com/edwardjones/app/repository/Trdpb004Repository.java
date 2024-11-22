@@ -15,20 +15,20 @@ public interface Trdpb004Repository {
   /**
    * This method will handle the sql operations for a fetch query.
    *
-   * @parm sqlca
    * @parm dcltbtrdexc
+   * @parm sqlca
    */
   public void fetchExcptionCursorTrdpb004(
-      ResultSet excptionCursorResultSet, Sqlca sqlca, Dcltbtrdexc dcltbtrdexc) throws Exception;
+      ResultSet excptionCursorResultSet, Dcltbtrdexc dcltbtrdexc, Sqlca sqlca) throws Exception;
 
   /**
    * This method will handle the sql operations for a fetch query.
    *
-   * @parm sqlca
    * @parm dcltbtrdexc
+   * @parm sqlca
    */
   public void fetchExcptionCursor1Trdpb004(
-      ResultSet excptionCursorResultSet, Sqlca sqlca, Dcltbtrdexc dcltbtrdexc) throws Exception;
+      ResultSet excptionCursorResultSet, Dcltbtrdexc dcltbtrdexc, Sqlca sqlca) throws Exception;
 
   /**
    * This method will handle the sql operations for a close query.
@@ -49,20 +49,20 @@ public interface Trdpb004Repository {
   /**
    * This method will handle the sql operations for a fetch query.
    *
-   * @parm sqlca
    * @parm dcltbtrdlog
+   * @parm sqlca
    */
   public void fetchRunlogCursorTrdpb004(
-      ResultSet runlogCursorResultSet, Sqlca sqlca, Dcltbtrdlog dcltbtrdlog) throws Exception;
+      ResultSet runlogCursorResultSet, Dcltbtrdlog dcltbtrdlog, Sqlca sqlca) throws Exception;
 
   /**
    * This method will handle the sql operations for a fetch query.
    *
-   * @parm sqlca
    * @parm dcltbtrdlog
+   * @parm sqlca
    */
   public void fetchRunlogCursor1Trdpb004(
-      ResultSet runlogCursorResultSet, Sqlca sqlca, Dcltbtrdlog dcltbtrdlog) throws Exception;
+      ResultSet runlogCursorResultSet, Dcltbtrdlog dcltbtrdlog, Sqlca sqlca) throws Exception;
 
   /**
    * This method will handle the sql operations for a close query.
@@ -83,20 +83,20 @@ public interface Trdpb004Repository {
   /**
    * This method will handle the sql operations for a fetch query.
    *
-   * @parm sqlca
    * @parm dcltbtrdsum
+   * @parm sqlca
    */
   public void fetchSummaryCursorTrdpb004(
-      ResultSet summaryCursorResultSet, Sqlca sqlca, Dcltbtrdsum dcltbtrdsum) throws Exception;
+      ResultSet summaryCursorResultSet, Dcltbtrdsum dcltbtrdsum, Sqlca sqlca) throws Exception;
 
   /**
    * This method will handle the sql operations for a fetch query.
    *
-   * @parm sqlca
    * @parm dcltbtrdsum
+   * @parm sqlca
    */
   public void fetchSummaryCursor1Trdpb004(
-      ResultSet summaryCursorResultSet, Sqlca sqlca, Dcltbtrdsum dcltbtrdsum) throws Exception;
+      ResultSet summaryCursorResultSet, Dcltbtrdsum dcltbtrdsum, Sqlca sqlca) throws Exception;
 
   /**
    * This method will handle the sql operations for a close query.

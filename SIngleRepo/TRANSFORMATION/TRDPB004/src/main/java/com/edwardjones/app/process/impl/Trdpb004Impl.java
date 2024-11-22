@@ -33,19 +33,19 @@ import com.edwardjones.app.repository.Trdpb004Repository;
   import com.cloudframe.app.utility.CFUtil;
 import java.math.BigDecimal;
 import com.edwardjones.app.trdpb004.dto.*;
-import com.edwardjones.app.trdpb004.dto.PrtExcptionRec;
-import com.edwardjones.app.trdpb004.dto.HdrRunlogRecDash;
-import com.edwardjones.app.trdpb004.dto.Sqlca;
-import com.edwardjones.app.trdpb004.dto.PrtRunlogRec;
-import com.edwardjones.app.trdpb004.dto.HdrSummaryRecDash;
 import com.edwardjones.app.trdpb004.dto.PrtSummaryRec;
 import com.edwardjones.app.trdpb004.dto.HdrExcptionRecDash;
-import com.edwardjones.app.trdpb004.dto.Dcltbtrdsum;
-import com.edwardjones.app.trdpb004.file.records.RunlogRecord;
-import com.edwardjones.app.trdpb004.file.records.SummaryRecord;
+import com.edwardjones.app.trdpb004.dto.PrtExcptionRec;
+import com.edwardjones.app.trdpb004.dto.HdrRunlogRecDash;
+import com.edwardjones.app.trdpb004.dto.HdrSummaryRecDash;
+import com.edwardjones.app.trdpb004.dto.PrtRunlogRec;
+import com.edwardjones.app.trdpb004.dto.Sqlca;
 import com.edwardjones.app.trdpb004.dto.Dcltbtrdlog;
-import com.edwardjones.app.trdpb004.dto.Dcltbtrdexc;
+import com.edwardjones.app.trdpb004.dto.Dcltbtrdsum;
 import com.edwardjones.app.trdpb004.file.records.ExcptionRecord;
+import com.edwardjones.app.trdpb004.dto.Dcltbtrdexc;
+import com.edwardjones.app.trdpb004.file.records.SummaryRecord;
+import com.edwardjones.app.trdpb004.file.records.RunlogRecord;
 import com.edwardjones.app.trdpb004.dto.Work;
 import com.edwardjones.app.common.CONSTANTS;
 import com.edwardjones.app.common.SQLS;
@@ -99,7 +99,6 @@ import java.sql.SQLException;
             // Reset program ended flag
            programCtx.setProgramEnded(false);
       	db2Base.reset("TRDPB004" ,dbQualifier, true/*use Dynamic SQL*/);
-//  cobolCode::PERFORM 0000-MAINLINE
 //  PERFORM 0000-MAINLINE
           mainline(programCtx);/*0000-MAINLINE*/
           if (programCtx.isProgramEnded()) {
@@ -141,33 +140,27 @@ import java.sql.SQLException;
       */
       @Override
       public MainlineOutCtx mainline(Trdpb004Ctx programCtx) throws Exception {
-//Added variable to get the output context in place.
 MainlineOutCtx methodOut = programCtx.getMainlineOutCtx();
-//  cobolCode::PERFORM 0001-INITIALIZE THRU 0001-EXIT
 //  PERFORM 0001-INITIALIZE THRU 0001-EXIT
           initialize(programCtx);/*0001-INITIALIZE*/
           if (programCtx.isProgramEnded()) {
               return methodOut;
           }
-//  cobolCode::PERFORM 1000-PROCESS-EXCEPTION THRU 1000-EXIT
 //  PERFORM 1000-PROCESS-EXCEPTION THRU 1000-EXIT
           processException(programCtx.getProcessExceptionInCtx());/*1000-PROCESS-EXCEPTION*/
           if (programCtx.isProgramEnded()) {
               return methodOut;
           }
-//  cobolCode::PERFORM 2000-PROCESS-TIMINGS THRU 2000-EXIT
 //  PERFORM 2000-PROCESS-TIMINGS THRU 2000-EXIT
           processTimings(programCtx.getProcessTimingsInCtx());/*2000-PROCESS-TIMINGS*/
           if (programCtx.isProgramEnded()) {
               return methodOut;
           }
-//  cobolCode::PERFORM 3000-PROCESS-SUMMARY-RPT THRU 3000-EXIT
 //  PERFORM 3000-PROCESS-SUMMARY-RPT THRU 3000-EXIT
           processSummaryRpt(programCtx.getProcessSummaryRptInCtx());/*3000-PROCESS-SUMMARY-RPT*/
           if (programCtx.isProgramEnded()) {
               return methodOut;
           }
-//  cobolCode::PERFORM 4000-CLEANUP THRU 4000-EXIT
 //  PERFORM 4000-CLEANUP THRU 4000-EXIT
           cleanup(programCtx);/*4000-CLEANUP*/
           if (programCtx.isProgramEnded()) {
@@ -175,7 +168,6 @@ MainlineOutCtx methodOut = programCtx.getMainlineOutCtx();
           }
           // MOVE 0 TO RETURN-CODE
           programCtx.setRc( 0);
-//  cobolCode::COMMIT
 //  COMMIT
           try {
           	// COMMIT
@@ -192,7 +184,6 @@ MainlineOutCtx methodOut = programCtx.getMainlineOutCtx();
           }
 
 // *
-//  cobolCode::GOBACK
 //  GOBACK
           setNotLogged(false); // no need to log, it is a normal termination
           programCtx.setProgramEnded(true);
@@ -231,9 +222,7 @@ MainlineOutCtx methodOut = programCtx.getMainlineOutCtx();
 // *
 
 // *
-//Added variable to get the output context in place.
 InitializeOutCtx methodOut = programCtx.getInitializeOutCtx();
-//  cobolCode::MOVE ALL '-' TO FILLER1 OF HDR-RUNLOG-REC-DASH FILLER2 OF HDR-RUNLOG-REC-DASH FILLER3 OF HDR-RUNLOG-REC-DASH FILLER4 OF HDR-RUNLOG-REC-DASH FILLER1 OF HDR-EXCPTION-REC-DASH FILLER2 OF HDR-EXCPTION-REC-DASH FILLER1 OF HDR-SUMMARY-REC-DASH FILLER2 OF HDR-SUMMARY-REC-DASH FILLER3 OF HDR-SUMMARY-REC-DASH FILLER4 OF HDR-SUMMARY-REC-DASH FILLER5 OF HDR-SUMMARY-REC-DASH FILLER6 OF HDR-SUMMARY-REC-DASH FILLER7 OF HDR-SUMMARY-REC-DASH FILLER8 OF HDR-SUMMARY-REC-DASH FILLER9 OF HDR-SUMMARY-REC-DASH
 //  MOVE ALL '-' TO FILLER1 OF HDR-RUNLOG-REC-DASH FILLER2 OF HDR-RUNLOG-REC-DASH FILLER3 OF HDR-RUNLOG-REC-DASH FILLER4 OF HDR-RUNLOG-REC-DASH FILLER1 OF HDR-EXCPTION-REC-DASH FILLER2 OF HDR-EXCPTION-REC-DASH FILLER1 OF HDR-SUMMARY-REC-DASH FILLER2 OF HDR-SUMMARY-REC-DASH FILLER3 OF HDR-SUMMARY-REC-DASH FILLER4 OF HDR-SUMMARY-REC-DASH FILLER5 OF HDR-SUMMARY-REC-DASH FILLER6 OF HDR-SUMMARY-REC-DASH FILLER7 OF HDR-SUMMARY-REC-DASH FILLER8 OF HDR-SUMMARY-REC-DASH FILLER9 OF HDR-SUMMARY-REC-DASH
           methodOut.setFiller1(CONSTANTS.LITERAL_MN12_);
           methodOut.setFiller2(CONSTANTS.LITERAL_MN8_);
@@ -295,20 +284,15 @@ InitializeOutCtx methodOut = programCtx.getInitializeOutCtx();
 // *
 
 // *
-//Added variable to get the program context in place.
 Trdpb004Ctx programCtx = methodIn.getTrdpb004Ctx();
-//Added variable to get the output context in place.
 ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
-//  cobolCode::OPEN OUTPUT EXCPTION-REPORT
 //  OPEN OUTPUT EXCPTION-REPORT
           excptionReport.open(new String(CONSTANTS.MODE_WRITE_ONLY_36397),excptionReport.getFileName(),excptionReport.getExcptionReportCharSet(),excptionReport.getExcptionReportCrlfFlag());
           methodOut.setExcptionFileStatus(excptionReport.getStatus() );
-//  cobolCode::IF EXCPTION-FILE-STATUS NOT = 0
 //  IF EXCPTION-FILE-STATUS NOT = 0
           if (	( methodOut.getExcptionFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Open EXCEPTION FILE failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Open EXCEPTION FILE failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1014051608);
@@ -316,7 +300,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -325,29 +308,24 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
           }
 
 // *
-//  cobolCode::WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC-DASH
 //  WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC-DASH
           excptionReport.write(methodIn.getHdrExcptionRecDash().toCharArray()); 
           methodOut.getExcptionRecord().setString(CONSTANTS.LOW_VALUE_1901561749);
           methodOut.setExcptionFileStatus(excptionReport.getStatus() );
-//  cobolCode::WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC
 //  WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC
           excptionReport.write(methodIn.getHdrExcptionRec()); 
           methodOut.getExcptionRecord().setString(CONSTANTS.LOW_VALUE_1901561749);
           methodOut.setExcptionFileStatus(excptionReport.getStatus() );
-//  cobolCode::WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC-DASH
 //  WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC-DASH
           excptionReport.write(methodIn.getHdrExcptionRecDash().toCharArray()); 
           methodOut.getExcptionRecord().setString(CONSTANTS.LOW_VALUE_1901561749);
           methodOut.setExcptionFileStatus(excptionReport.getStatus() );
 
 // *
-//  cobolCode::IF EXCPTION-FILE-STATUS NOT = 0
 //  IF EXCPTION-FILE-STATUS NOT = 0
           if (	( methodOut.getExcptionFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Write EXCEPTION Header failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Write EXCEPTION Header failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_37533272);
@@ -355,19 +333,16 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
                   return methodOut;
               }
           }
-//  cobolCode::SELECT EXC_TYPE , EXC_DESCRIPTION FROM TBTRDEXC ORDER BY EXC_TYPE ASC , EXC_DESCRIPTION ASC
 //  SELECT EXC_TYPE , EXC_DESCRIPTION FROM TBTRDEXC ORDER BY EXC_TYPE ASC , EXC_DESCRIPTION ASC
           programCtx.setExcptionCursorResultSet(trdpb004Repository.openExcptionCursorTrdpb004(programCtx.getSqlca()));
 
 // *
-//  cobolCode::IF SQLCODE NOT = 0 THEN
 //  IF SQLCODE NOT = 0 THEN
           if (	( methodOut.getSqlcode() != 0 )) { 
               // MOVE SQLCODE TO WS-SQLCODE
@@ -375,7 +350,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Open EXCPTION_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Open EXCPTION_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_320510168);
@@ -383,19 +357,16 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
                   return methodOut;
               }
           }
-//  cobolCode::FETCH EXCPTION_CURSOR INTO ? , ?
 //  FETCH EXCPTION_CURSOR INTO ? , ?
-          trdpb004Repository.fetchExcptionCursorTrdpb004(programCtx.getExcptionCursorResultSet(),programCtx.getSqlca(),methodOut.getDcltbtrdexc());
+          trdpb004Repository.fetchExcptionCursorTrdpb004(programCtx.getExcptionCursorResultSet(),methodOut.getDcltbtrdexc(),programCtx.getSqlca());
 
 // *
-//  cobolCode::EVALUATE TRUE
 //  EVALUATE TRUE
           if  (	( methodOut.getSqlcode() == 0 )) { 
               ;
@@ -403,17 +374,14 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
           else if  (	( methodOut.getSqlcode() == 100 )) { 
               // MOVE '*** No Exceptions ****' TO EXCPTION-RECORD
               methodOut.getExcptionRecord().setString(CONSTANTS.LITERAL_1019924377);
-//  cobolCode::WRITE EXCPTION-RECORD
 //  WRITE EXCPTION-RECORD
               excptionReport.write(methodOut.getExcptionRecord().toCharArray()); 
               methodOut.getExcptionRecord().setString(CONSTANTS.LOW_VALUE_1901561749);
               methodOut.setExcptionFileStatus(excptionReport.getStatus() );
-//  cobolCode::IF EXCPTION-FILE-STATUS NOT = 0
 //  IF EXCPTION-FILE-STATUS NOT = 0
               if (	( methodOut.getExcptionFileStatus() != 0 )) { 
                   // MOVE SPACES TO WS-EXCEPTION
                   methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Write EXCEPTION FILE failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Write EXCEPTION FILE failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
                   charArray = new ArrayList<char[]>();
                      charArray.add(CONSTANTS.LITERAL_1066450583);
@@ -421,7 +389,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
                   joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
                   updated = updateString(methodOut.getException() ,joinCharArray);
                   methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
                   reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
                   if (programCtx.isProgramEnded()) {
@@ -435,7 +402,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Fetch EXCPTION_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Fetch EXCPTION_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1352272044);
@@ -443,7 +409,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -455,30 +420,24 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
 
 // *
 // *        Move exc-timestamp     to prt-excption-ts
-//  cobolCode::PERFORM UNTIL SQLCODE NOT = 0
 //  PERFORM UNTIL SQLCODE NOT = 0
           while ((	( methodOut.getSqlcode() == 0 ))) {
-//  cobolCode::MOVE EXC-TYPE TO PRT-EXCPTION-TYPE
 //  MOVE EXC-TYPE TO PRT-EXCPTION-TYPE
               methodOut.setPrtExcptionType(methodOut.getExcType());
-//  cobolCode::MOVE EXC-DESCRIPTION-TEXT (1 : EXC-DESCRIPTION-LEN ) TO PRT-EXCPTION-DESC
 //  MOVE EXC-DESCRIPTION-TEXT (1 : EXC-DESCRIPTION-LEN ) TO PRT-EXCPTION-DESC
               methodIn.getPrtExcptionRec().replace(methodOut.getDcltbtrdexc()/*parent*/,26/*fromOffset - (prtExcptionDesc) */,methodIn.getExcDescriptionLen()/*fromLen*/,25/*toOffset - (excDescriptionText) */,1000/*toLen*/);
 
 // *
 
 // *
-//  cobolCode::WRITE EXCPTION-RECORD FROM PRT-EXCPTION-REC
 //  WRITE EXCPTION-RECORD FROM PRT-EXCPTION-REC
               excptionReport.write(methodIn.getPrtExcptionRec().toCharArray()); 
               methodOut.getExcptionRecord().setString(CONSTANTS.LOW_VALUE_1901561749);
               methodOut.setExcptionFileStatus(excptionReport.getStatus() );
-//  cobolCode::IF EXCPTION-FILE-STATUS NOT = 0
 //  IF EXCPTION-FILE-STATUS NOT = 0
               if (	( methodOut.getExcptionFileStatus() != 0 )) { 
                   // MOVE SPACES TO WS-EXCEPTION
                   methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Write EXCEPTION Header failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Write EXCEPTION Header failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
                   charArray = new ArrayList<char[]>();
                      charArray.add(CONSTANTS.LITERAL_37533272);
@@ -486,21 +445,17 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
                   joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
                   updated = updateString(methodOut.getException() ,joinCharArray);
                   methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
                   reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
                   if (programCtx.isProgramEnded()) {
                       return methodOut;
                   }
               }
-//  cobolCode::FETCH EXCPTION_CURSOR INTO ? , ?
 //  FETCH EXCPTION_CURSOR INTO ? , ?
-              trdpb004Repository.fetchExcptionCursor1Trdpb004(programCtx.getExcptionCursorResultSet(),programCtx.getSqlca(),methodOut.getDcltbtrdexc());
+              trdpb004Repository.fetchExcptionCursor1Trdpb004(programCtx.getExcptionCursorResultSet(),methodOut.getDcltbtrdexc(),programCtx.getSqlca());
 
 // *
-//  cobolCode::IF SQLCODE = 0 OR 100 THEN
 //  IF SQLCODE = 0 OR 100 THEN
-//  cobolCode::ELSE
 //  ELSE
               if (	( methodOut.getSqlcode() != 0 ) && 	( methodOut.getSqlcode() != 100 )) { 
                   // MOVE SQLCODE TO WS-SQLCODE
@@ -508,7 +463,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
                   methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
                   // MOVE SPACES TO WS-EXCEPTION
                   methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Fetch EXCPTION_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Fetch EXCPTION_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
                   charArray = new ArrayList<char[]>();
                      charArray.add(CONSTANTS.LITERAL_1352272044);
@@ -516,7 +470,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
                   joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
                   updated = updateString(methodOut.getException() ,joinCharArray);
                   methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
                   reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
                   if (programCtx.isProgramEnded()) {
@@ -524,10 +477,8 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
                   }
               }
           }
-//  cobolCode::CLOSE EXCPTION_CURSOR
 //  CLOSE EXCPTION_CURSOR
           trdpb004Repository.closeExcptionCursorTrdpb004(programCtx.getExcptionCursorResultSet(),programCtx.getSqlca());
-//  cobolCode::EVALUATE TRUE
 //  EVALUATE TRUE
           if  (	( methodOut.getSqlcode() == 0 )) { 
               ;
@@ -538,7 +489,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Close EXCPTION_CURSOR failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Close EXCPTION_CURSOR failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1879447962);
@@ -546,7 +496,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -559,21 +508,17 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
 // *
 
 // *
-//  cobolCode::WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC-DASH
 //  WRITE EXCPTION-RECORD FROM HDR-EXCPTION-REC-DASH
           excptionReport.write(methodIn.getHdrExcptionRecDash().toCharArray()); 
           methodOut.getExcptionRecord().setString(CONSTANTS.LOW_VALUE_1901561749);
           methodOut.setExcptionFileStatus(excptionReport.getStatus() );
-//  cobolCode::CLOSE EXCPTION-REPORT
 //  CLOSE EXCPTION-REPORT
           excptionReport.close(); 
           methodOut.setExcptionFileStatus(excptionReport.getStatus() );
-//  cobolCode::IF EXCPTION-FILE-STATUS NOT = 0
 //  IF EXCPTION-FILE-STATUS NOT = 0
           if (	( methodOut.getExcptionFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Close EXCEPTION FILE failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Close EXCEPTION FILE failed : File-Status = ' EXCPTION-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1920531074);
@@ -581,7 +526,6 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -638,20 +582,15 @@ ProcessExceptionOutCtx methodOut = methodIn.getProcessExceptionOutCtx();
 // *
 
 // *
-//Added variable to get the program context in place.
 Trdpb004Ctx programCtx = methodIn.getTrdpb004Ctx();
-//Added variable to get the output context in place.
 ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
-//  cobolCode::OPEN OUTPUT RUNLOG-REPORT
 //  OPEN OUTPUT RUNLOG-REPORT
           runlogReport.open(new String(CONSTANTS.MODE_WRITE_ONLY_36397),runlogReport.getFileName(),runlogReport.getRunlogReportCharSet(),runlogReport.getRunlogReportCrlfFlag());
           methodOut.setRunlogFileStatus(runlogReport.getStatus() );
-//  cobolCode::IF RUNLOG-FILE-STATUS NOT = 0
 //  IF RUNLOG-FILE-STATUS NOT = 0
           if (	( methodOut.getRunlogFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Open RUNLOG FILE failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Open RUNLOG FILE failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1323385110);
@@ -659,7 +598,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -668,29 +606,24 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
           }
 
 // *
-//  cobolCode::WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC-DASH
 //  WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC-DASH
           runlogReport.write(methodIn.getHdrRunlogRecDash().toCharArray()); 
           methodOut.getRunlogRecord().setString(CONSTANTS.LOW_VALUE_1253878146);
           methodOut.setRunlogFileStatus(runlogReport.getStatus() );
-//  cobolCode::WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC
 //  WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC
           runlogReport.write(methodIn.getHdrRunlogRec()); 
           methodOut.getRunlogRecord().setString(CONSTANTS.LOW_VALUE_1253878146);
           methodOut.setRunlogFileStatus(runlogReport.getStatus() );
-//  cobolCode::WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC-DASH
 //  WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC-DASH
           runlogReport.write(methodIn.getHdrRunlogRecDash().toCharArray()); 
           methodOut.getRunlogRecord().setString(CONSTANTS.LOW_VALUE_1253878146);
           methodOut.setRunlogFileStatus(runlogReport.getStatus() );
 
 // *
-//  cobolCode::IF RUNLOG-FILE-STATUS NOT = 0
 //  IF RUNLOG-FILE-STATUS NOT = 0
           if (	( methodOut.getRunlogFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Write EXCEPTION Header failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Write EXCEPTION Header failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_37533272);
@@ -698,19 +631,16 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
                   return methodOut;
               }
           }
-//  cobolCode::SELECT LOG_TRANSACTION , LOG_CURRENCY , LOG_START_TS , LOG_END_TS FROM TBTRDLOG ORDER BY LOG_TRANSACTION ASC , LOG_CURRENCY ASC
 //  SELECT LOG_TRANSACTION , LOG_CURRENCY , LOG_START_TS , LOG_END_TS FROM TBTRDLOG ORDER BY LOG_TRANSACTION ASC , LOG_CURRENCY ASC
           programCtx.setRunlogCursorResultSet(trdpb004Repository.openRunlogCursorTrdpb004(programCtx.getSqlca()));
 
 // *
-//  cobolCode::IF SQLCODE NOT = 0 THEN
 //  IF SQLCODE NOT = 0 THEN
           if (	( methodOut.getSqlcode() != 0 )) { 
               // MOVE SQLCODE TO WS-SQLCODE
@@ -718,7 +648,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Open RUNLOG_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Open RUNLOG_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1964633763);
@@ -726,19 +655,16 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
                   return methodOut;
               }
           }
-//  cobolCode::FETCH RUNLOG_CURSOR INTO ? , ? , ? , ?
 //  FETCH RUNLOG_CURSOR INTO ? , ? , ? , ?
-          trdpb004Repository.fetchRunlogCursorTrdpb004(programCtx.getRunlogCursorResultSet(),programCtx.getSqlca(),methodOut.getDcltbtrdlog());
+          trdpb004Repository.fetchRunlogCursorTrdpb004(programCtx.getRunlogCursorResultSet(),methodOut.getDcltbtrdlog(),programCtx.getSqlca());
 
 // *
-//  cobolCode::EVALUATE TRUE
 //  EVALUATE TRUE
           if  (	( methodOut.getSqlcode() == 0 ) || 	( methodOut.getSqlcode() == 100 )) { 
               ;
@@ -749,7 +675,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Fetch RUNLOG_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Fetch RUNLOG_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_479762895);
@@ -757,7 +682,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -768,36 +692,28 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
 // *
 
 // *
-//  cobolCode::PERFORM UNTIL SQLCODE NOT = 0
 //  PERFORM UNTIL SQLCODE NOT = 0
           while ((	( methodOut.getSqlcode() == 0 ))) {
-//  cobolCode::MOVE LOG-TRANSACTION TO PRT-RUNLOG-TRANSACTION
 //  MOVE LOG-TRANSACTION TO PRT-RUNLOG-TRANSACTION
               methodOut.setPrtRunlogTransaction(methodOut.getLogTransaction());
-//  cobolCode::MOVE LOG-CURRENCY TO PRT-RUNLOG-CURRENCY
 //  MOVE LOG-CURRENCY TO PRT-RUNLOG-CURRENCY
               methodOut.setPrtRunlogCurrency(methodOut.getLogCurrency());
-//  cobolCode::MOVE LOG-START-TS TO PRT-RUNLOG-START-TS
 //  MOVE LOG-START-TS TO PRT-RUNLOG-START-TS
               methodOut.setPrtRunlogStartTs(methodOut.getLogStartTs());
-//  cobolCode::MOVE LOG-END-TS TO PRT-RUNLOG-END-TS
 //  MOVE LOG-END-TS TO PRT-RUNLOG-END-TS
               methodOut.setPrtRunlogEndTs(methodOut.getLogEndTs());
 
 // *
 
 // *
-//  cobolCode::WRITE RUNLOG-RECORD FROM PRT-RUNLOG-REC
 //  WRITE RUNLOG-RECORD FROM PRT-RUNLOG-REC
               runlogReport.write(methodIn.getPrtRunlogRec().toCharArray()); 
               methodOut.getRunlogRecord().setString(CONSTANTS.LOW_VALUE_1253878146);
               methodOut.setRunlogFileStatus(runlogReport.getStatus() );
-//  cobolCode::IF RUNLOG-FILE-STATUS NOT = 0
 //  IF RUNLOG-FILE-STATUS NOT = 0
               if (	( methodOut.getRunlogFileStatus() != 0 )) { 
                   // MOVE SPACES TO WS-EXCEPTION
                   methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Write EXCEPTION Header failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Write EXCEPTION Header failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
                   charArray = new ArrayList<char[]>();
                      charArray.add(CONSTANTS.LITERAL_37533272);
@@ -805,21 +721,17 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
                   joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
                   updated = updateString(methodOut.getException() ,joinCharArray);
                   methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
                   reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
                   if (programCtx.isProgramEnded()) {
                       return methodOut;
                   }
               }
-//  cobolCode::FETCH RUNLOG_CURSOR INTO ? , ? , ? , ?
 //  FETCH RUNLOG_CURSOR INTO ? , ? , ? , ?
-              trdpb004Repository.fetchRunlogCursor1Trdpb004(programCtx.getRunlogCursorResultSet(),programCtx.getSqlca(),methodOut.getDcltbtrdlog());
+              trdpb004Repository.fetchRunlogCursor1Trdpb004(programCtx.getRunlogCursorResultSet(),methodOut.getDcltbtrdlog(),programCtx.getSqlca());
 
 // *
-//  cobolCode::IF SQLCODE = 0 OR 100 THEN
 //  IF SQLCODE = 0 OR 100 THEN
-//  cobolCode::ELSE
 //  ELSE
               if (	( methodOut.getSqlcode() != 0 ) && 	( methodOut.getSqlcode() != 100 )) { 
                   // MOVE SQLCODE TO WS-SQLCODE
@@ -827,7 +739,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
                   methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
                   // MOVE SPACES TO WS-EXCEPTION
                   methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Fetch RUNLOG_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Fetch RUNLOG_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
                   charArray = new ArrayList<char[]>();
                      charArray.add(CONSTANTS.LITERAL_479762895);
@@ -835,7 +746,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
                   joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
                   updated = updateString(methodOut.getException() ,joinCharArray);
                   methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
                   reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
                   if (programCtx.isProgramEnded()) {
@@ -843,10 +753,8 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
                   }
               }
           }
-//  cobolCode::CLOSE RUNLOG_CURSOR
 //  CLOSE RUNLOG_CURSOR
           trdpb004Repository.closeRunlogCursorTrdpb004(programCtx.getRunlogCursorResultSet(),programCtx.getSqlca());
-//  cobolCode::EVALUATE TRUE
 //  EVALUATE TRUE
           if  (	( methodOut.getSqlcode() == 0 )) { 
               ;
@@ -857,7 +765,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Close RUNLOG_CURSOR failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Close RUNLOG_CURSOR failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_452817919);
@@ -865,7 +772,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -878,21 +784,17 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
 // *
 
 // *
-//  cobolCode::WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC-DASH
 //  WRITE RUNLOG-RECORD FROM HDR-RUNLOG-REC-DASH
           runlogReport.write(methodIn.getHdrRunlogRecDash().toCharArray()); 
           methodOut.getRunlogRecord().setString(CONSTANTS.LOW_VALUE_1253878146);
           methodOut.setRunlogFileStatus(runlogReport.getStatus() );
-//  cobolCode::CLOSE RUNLOG-REPORT
 //  CLOSE RUNLOG-REPORT
           runlogReport.close(); 
           methodOut.setRunlogFileStatus(runlogReport.getStatus() );
-//  cobolCode::IF RUNLOG-FILE-STATUS NOT = 0
 //  IF RUNLOG-FILE-STATUS NOT = 0
           if (	( methodOut.getRunlogFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Close RUNLOG FILE failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Close RUNLOG FILE failed : File-Status = ' RUNLOG-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1091059648);
@@ -900,7 +802,6 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -972,20 +873,15 @@ ProcessTimingsOutCtx methodOut = methodIn.getProcessTimingsOutCtx();
 // *
 
 // *
-//Added variable to get the program context in place.
 Trdpb004Ctx programCtx = methodIn.getTrdpb004Ctx();
-//Added variable to get the output context in place.
 ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
-//  cobolCode::OPEN OUTPUT SUMMARY-REPORT
 //  OPEN OUTPUT SUMMARY-REPORT
           summaryReport.open(new String(CONSTANTS.MODE_WRITE_ONLY_36397),summaryReport.getFileName(),summaryReport.getSummaryReportCharSet(),summaryReport.getSummaryReportCrlfFlag());
           methodOut.setSummaryFileStatus(summaryReport.getStatus() );
-//  cobolCode::IF SUMMARY-FILE-STATUS NOT = 0
 //  IF SUMMARY-FILE-STATUS NOT = 0
           if (	( methodOut.getSummaryFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Open SUMMARY FILE failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Open SUMMARY FILE failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1195131089);
@@ -993,7 +889,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -1002,29 +897,24 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
           }
 
 // *
-//  cobolCode::WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC-DASH
 //  WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC-DASH
           summaryReport.write(methodIn.getHdrSummaryRecDash().toCharArray()); 
           methodOut.getSummaryRecord().setString(CONSTANTS.LOW_VALUE_215751088);
           methodOut.setSummaryFileStatus(summaryReport.getStatus() );
-//  cobolCode::WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC
 //  WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC
           summaryReport.write(methodIn.getHdrSummaryRec()); 
           methodOut.getSummaryRecord().setString(CONSTANTS.LOW_VALUE_215751088);
           methodOut.setSummaryFileStatus(summaryReport.getStatus() );
-//  cobolCode::WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC-DASH
 //  WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC-DASH
           summaryReport.write(methodIn.getHdrSummaryRecDash().toCharArray()); 
           methodOut.getSummaryRecord().setString(CONSTANTS.LOW_VALUE_215751088);
           methodOut.setSummaryFileStatus(summaryReport.getStatus() );
 
 // *
-//  cobolCode::IF SUMMARY-FILE-STATUS NOT = 0
 //  IF SUMMARY-FILE-STATUS NOT = 0
           if (	( methodOut.getSummaryFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Write EXCEPTION Header failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Write EXCEPTION Header failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_37533272);
@@ -1032,19 +922,16 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
                   return methodOut;
               }
           }
-//  cobolCode::SELECT SUM_CUSTOMER_ID , SUM_OVERDUE , SUM_REJECTED , SUM_SETTLED , SUM_CURRENCY , SUM_OPEN_BALANCE , SUM_TOTAL_DEBIT , SUM_TOTAL_CREDIT , SUM_CLOSE_BALANCE FROM TBTRDSUM ORDER BY SUM_CUSTOMER_ID ASC
 //  SELECT SUM_CUSTOMER_ID , SUM_OVERDUE , SUM_REJECTED , SUM_SETTLED , SUM_CURRENCY , SUM_OPEN_BALANCE , SUM_TOTAL_DEBIT , SUM_TOTAL_CREDIT , SUM_CLOSE_BALANCE FROM TBTRDSUM ORDER BY SUM_CUSTOMER_ID ASC
           programCtx.setSummaryCursorResultSet(trdpb004Repository.openSummaryCursorTrdpb004(programCtx.getSqlca()));
 
 // *
-//  cobolCode::IF SQLCODE NOT = 0 THEN
 //  IF SQLCODE NOT = 0 THEN
           if (	( methodOut.getSqlcode() != 0 )) { 
               // MOVE SQLCODE TO WS-SQLCODE
@@ -1052,7 +939,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Open SUMMARY_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Open SUMMARY_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_497856130);
@@ -1060,19 +946,16 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
                   return methodOut;
               }
           }
-//  cobolCode::FETCH SUMMARY_CURSOR INTO ? , ? , ? , ? , ? , ? , ? , ? , ?
 //  FETCH SUMMARY_CURSOR INTO ? , ? , ? , ? , ? , ? , ? , ? , ?
-          trdpb004Repository.fetchSummaryCursorTrdpb004(programCtx.getSummaryCursorResultSet(),programCtx.getSqlca(),methodOut.getDcltbtrdsum());
+          trdpb004Repository.fetchSummaryCursorTrdpb004(programCtx.getSummaryCursorResultSet(),methodOut.getDcltbtrdsum(),programCtx.getSqlca());
 
 // *
-//  cobolCode::EVALUATE TRUE
 //  EVALUATE TRUE
           if  (	( methodOut.getSqlcode() == 0 ) || 	( methodOut.getSqlcode() == 100 )) { 
               ;
@@ -1083,7 +966,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Fetch SUMMARY_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Fetch SUMMARY_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_715787218);
@@ -1091,7 +973,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -1102,10 +983,8 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
 // *
 
 // *
-//  cobolCode::PERFORM UNTIL SQLCODE NOT = 0
 //  PERFORM UNTIL SQLCODE NOT = 0
           while ((	( methodOut.getSqlcode() == 0 ))) {
-//  cobolCode::MOVE SUM-CUSTOMER-ID TO PRT-SUMMARY-CUSTOMER-ID
 //  MOVE SUM-CUSTOMER-ID TO PRT-SUMMARY-CUSTOMER-ID
               methodOut.setPrtSummaryCustomerId(methodOut.getSumCustomerId());
               // MOVE SUM-OVERDUE TO PRT-SUMMARY-OVERDUE
@@ -1117,22 +996,17 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               // MOVE SUM-SETTLED TO PRT-SUMMARY-SETTLED
               //  FORMAT769933041 = "ZZZ,ZZZ,ZZ9"
               methodOut.setPrtSummarySettled(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT769933041,String.valueOf(methodOut.getSumSettled()).toCharArray()));
-//  cobolCode::MOVE SUM-CURRENCY TO PRT-SUMMARY-CURRENCY
 //  MOVE SUM-CURRENCY TO PRT-SUMMARY-CURRENCY
               methodOut.setPrtSummaryCurrency(methodOut.getSumCurrency());
-//  cobolCode::MOVE SUM-OPEN-BALANCE TO PRT-SUMMARY-OPEN-BALANCE
 //  MOVE SUM-OPEN-BALANCE TO PRT-SUMMARY-OPEN-BALANCE
 //  FORMAT_1490104077 = "---,---,--9.99"
               methodOut.setPrtSummaryOpenBalance(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT_1490104077,methodOut.getSumOpenBalance().toPlainString().toCharArray()));
-//  cobolCode::MOVE SUM-TOTAL-DEBIT TO PRT-SUMMARY-TOTAL-DEBIT
 //  MOVE SUM-TOTAL-DEBIT TO PRT-SUMMARY-TOTAL-DEBIT
 //  FORMAT_1490104077 = "---,---,--9.99"
               methodOut.setPrtSummaryTotalDebit(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT_1490104077,methodOut.getSumTotalDebit().toPlainString().toCharArray()));
-//  cobolCode::MOVE SUM-TOTAL-CREDIT TO PRT-SUMMARY-TOTAL-CREDIT
 //  MOVE SUM-TOTAL-CREDIT TO PRT-SUMMARY-TOTAL-CREDIT
 //  FORMAT_1490104077 = "---,---,--9.99"
               methodOut.setPrtSummaryTotalCredit(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT_1490104077,methodOut.getSumTotalCredit().toPlainString().toCharArray()));
-//  cobolCode::MOVE SUM-CLOSE-BALANCE TO PRT-SUMMARY-CLOSE-BALANCE
 //  MOVE SUM-CLOSE-BALANCE TO PRT-SUMMARY-CLOSE-BALANCE
 //  FORMAT_1490104077 = "---,---,--9.99"
               methodOut.setPrtSummaryCloseBalance(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT_1490104077,methodOut.getSumCloseBalance().toPlainString().toCharArray()));
@@ -1140,17 +1014,14 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
 // *
 
 // *
-//  cobolCode::WRITE SUMMARY-RECORD FROM PRT-SUMMARY-REC
 //  WRITE SUMMARY-RECORD FROM PRT-SUMMARY-REC
               summaryReport.write(methodIn.getPrtSummaryRec().toCharArray()); 
               methodOut.getSummaryRecord().setString(CONSTANTS.LOW_VALUE_215751088);
               methodOut.setSummaryFileStatus(summaryReport.getStatus() );
-//  cobolCode::IF SUMMARY-FILE-STATUS NOT = 0
 //  IF SUMMARY-FILE-STATUS NOT = 0
               if (	( methodOut.getSummaryFileStatus() != 0 )) { 
                   // MOVE SPACES TO WS-EXCEPTION
                   methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Write EXCEPTION Header failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Write EXCEPTION Header failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
                   charArray = new ArrayList<char[]>();
                      charArray.add(CONSTANTS.LITERAL_37533272);
@@ -1158,21 +1029,17 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
                   joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
                   updated = updateString(methodOut.getException() ,joinCharArray);
                   methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
                   reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
                   if (programCtx.isProgramEnded()) {
                       return methodOut;
                   }
               }
-//  cobolCode::FETCH SUMMARY_CURSOR INTO ? , ? , ? , ? , ? , ? , ? , ?
 //  FETCH SUMMARY_CURSOR INTO ? , ? , ? , ? , ? , ? , ? , ?
-              trdpb004Repository.fetchSummaryCursor1Trdpb004(programCtx.getSummaryCursorResultSet(),programCtx.getSqlca(),methodOut.getDcltbtrdsum());
+              trdpb004Repository.fetchSummaryCursor1Trdpb004(programCtx.getSummaryCursorResultSet(),methodOut.getDcltbtrdsum(),programCtx.getSqlca());
 
 // *
-//  cobolCode::IF SQLCODE = 0 OR 100 THEN
 //  IF SQLCODE = 0 OR 100 THEN
-//  cobolCode::ELSE
 //  ELSE
               if (	( methodOut.getSqlcode() != 0 ) && 	( methodOut.getSqlcode() != 100 )) { 
                   // MOVE SQLCODE TO WS-SQLCODE
@@ -1180,7 +1047,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
                   methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
                   // MOVE SPACES TO WS-EXCEPTION
                   methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Fetch SUMMARY_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Fetch SUMMARY_CURSOR Cursor failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
                   charArray = new ArrayList<char[]>();
                      charArray.add(CONSTANTS.LITERAL_715787218);
@@ -1188,7 +1054,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
                   joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
                   updated = updateString(methodOut.getException() ,joinCharArray);
                   methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
                   reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
                   if (programCtx.isProgramEnded()) {
@@ -1196,10 +1061,8 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
                   }
               }
           }
-//  cobolCode::CLOSE SUMMARY_CURSOR
 //  CLOSE SUMMARY_CURSOR
           trdpb004Repository.closeSummaryCursorTrdpb004(programCtx.getSummaryCursorResultSet(),programCtx.getSqlca());
-//  cobolCode::EVALUATE TRUE
 //  EVALUATE TRUE
           if  (	( methodOut.getSqlcode() == 0 )) { 
               ;
@@ -1210,7 +1073,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               methodOut.setSqlcode_Ws(CFUtil.cobolNumberFormatter(CONSTANTS.FORMAT1016334848,String.valueOf(methodOut.getSqlcode()).toCharArray()));
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Close SUMMARY_CURSOR failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Close SUMMARY_CURSOR failed : SQLCODE = ' WS-SQLCODE DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_1681395608);
@@ -1218,7 +1080,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -1231,21 +1092,17 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
 // *
 
 // *
-//  cobolCode::WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC-DASH
 //  WRITE SUMMARY-RECORD FROM HDR-SUMMARY-REC-DASH
           summaryReport.write(methodIn.getHdrSummaryRecDash().toCharArray()); 
           methodOut.getSummaryRecord().setString(CONSTANTS.LOW_VALUE_215751088);
           methodOut.setSummaryFileStatus(summaryReport.getStatus() );
-//  cobolCode::CLOSE SUMMARY-REPORT
 //  CLOSE SUMMARY-REPORT
           summaryReport.close(); 
           methodOut.setSummaryFileStatus(summaryReport.getStatus() );
-//  cobolCode::IF SUMMARY-FILE-STATUS NOT = 0
 //  IF SUMMARY-FILE-STATUS NOT = 0
           if (	( methodOut.getSummaryFileStatus() != 0 )) { 
               // MOVE SPACES TO WS-EXCEPTION
               methodOut.setException(CONSTANTS.SPACE_200);
-//  cobolCode::STRING 'Close SUMMARY FILE failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
 //  STRING 'Close SUMMARY FILE failed : File-Status = ' SUMMARY-FILE-STATUS DELIMITED BY SIZE INTO WS-EXCEPTION END-STRING
               charArray = new ArrayList<char[]>();
                  charArray.add(CONSTANTS.LITERAL_638212377);
@@ -1253,7 +1110,6 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
               joinCharArray = Field.mergeArrays(charArray.get(0),charArray.get(1));
               updated = updateString(methodOut.getException() ,joinCharArray);
               methodOut.setException(  (char[])updated.get("string"));
-//  cobolCode::PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
 //  PERFORM 9000-REPORT-EXCEPTION THRU 9000-EXIT
               reportException(programCtx.getReportExceptionInCtx());/*9000-REPORT-EXCEPTION*/
               if (programCtx.isProgramEnded()) {
@@ -1278,21 +1134,15 @@ ProcessSummaryRptOutCtx methodOut = methodIn.getProcessSummaryRptOutCtx();
       public CleanupOutCtx cleanup(Trdpb004Ctx programCtx) throws Exception {
       
 // *
-//Added variable to get the output context in place.
 CleanupOutCtx methodOut = programCtx.getCleanupOutCtx();
-//  cobolCode::DELETE FROM TBTRDSTQ
 //  DELETE FROM TBTRDSTQ
           trdpb004Repository.deleteTbtrdstq(programCtx.getSqlca());
-//  cobolCode::DELETE FROM TBTRDLOG
 //  DELETE FROM TBTRDLOG
           trdpb004Repository.deleteTbtrdlog(programCtx.getSqlca());
-//  cobolCode::DELETE FROM TBTRDSUM
 //  DELETE FROM TBTRDSUM
           trdpb004Repository.deleteTbtrdsum(programCtx.getSqlca());
-//  cobolCode::DELETE FROM TBTRDEXC
 //  DELETE FROM TBTRDEXC
           trdpb004Repository.deleteTbtrdexc(programCtx.getSqlca());
-//  cobolCode::COMMIT
 //  COMMIT
           try {
           	// COMMIT
@@ -1330,16 +1180,12 @@ CleanupOutCtx methodOut = programCtx.getCleanupOutCtx();
 // *
 
 // *
-//Added variable to get the program context in place.
 Trdpb004Ctx programCtx = methodIn.getTrdpb004Ctx();
-//Added variable to get the output context in place.
 ReportExceptionOutCtx methodOut = methodIn.getReportExceptionOutCtx();
-//  cobolCode::DISPLAY WS-EXCEPTION
 //  DISPLAY WS-EXCEPTION
           logger.info(new String(methodIn.getException())); 
           // MOVE 16 TO RETURN-CODE
           programCtx.setRc( 16);
-//  cobolCode::GOBACK
 //  GOBACK
           setNotLogged(false); // no need to log, it is a normal termination
           programCtx.setProgramEnded(true);

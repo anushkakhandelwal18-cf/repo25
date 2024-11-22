@@ -23,10 +23,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-batch</artifactId>
-		</dependency>
-		<dependency>
 		  <groupId>com.ibm.db2.jcc</groupId>
 		  <artifactId>db2jcc4</artifactId>
 		  <version>4.24.92</version>
@@ -39,7 +35,7 @@
         <dependency>
             <groupId>com.cloudframe</groupId>
             <artifactId>dcio</artifactId>
-            <version>4.0.0.153</version>
+            <version>4.0.0.158</version>
         </dependency>
       	<dependency>
 		    <groupId>com.h2database</groupId>
